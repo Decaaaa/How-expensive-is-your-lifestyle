@@ -53,6 +53,12 @@ bobRight = pygame.transform.scale(bobRightInit, (w * 98/1600, h * 245/900))
 bobLeftInit = pygame.image.load(os.path.join("./", "bobLeft.png"))
 bobLeft = pygame.transform.scale(bobLeftInit, (w * 98/1600, h * 245/900))
 
+doorOpenInit = pygame.image.load(os.path.join("./", "doorOpen.png"))
+doorOpen = pygame.transform.scale(doorOpenInit, (w * 140/1600, h * 290/900))
+
+doorClosedInit = pygame.image.load(os.path.join("./", "doorClosed.png"))
+doorClosed = pygame.transform.scale(doorClosedInit, (w * 140/1600, h * 290/900))
+
 playerX = w * 40/1600
 moveRight = False
 moveLeft = False
@@ -94,6 +100,21 @@ while play:
     elif screen == 2:
 
         window.blit(mainbg, (0, 0))
+
+        if ((playerX > 190) and (playerX < 430)):
+            window.blit(doorOpen, (290, 450))
+        else:
+            window.blit(doorClosed, (290, 450))
+
+        if ((playerX > 630) and (playerX < 870)):
+            window.blit(doorOpen, (730, 450))
+        else:
+            window.blit(doorClosed, (730, 450))
+        
+        if ((playerX > 1070) and (playerX < 1310)):
+            window.blit(doorOpen, (1170, 450))
+        else:
+            window.blit(doorClosed, (1170, 450))
     
         if ((moveRight and not moveLeft) and (playerX <= w * 1530/1600)):
             playerX += w * 20/1600
@@ -122,6 +143,13 @@ while play:
         
         elif screen == 2:
             if event.type == pygame.KEYDOWN:
+                if (event.key == pygame.K_SPACE):
+                    if ((playerX > 190) and (playerX < 430)):
+                        screen = 3
+                    if ((playerX > 630) and (playerX < 870)):
+                        screen = 4
+                    if ((playerX > 1070) and (playerX < 1310)):
+                        sceen = 5
                 if ((event.key == pygame.K_d or event.key == pygame.K_RIGHT) and (not (event.key == pygame.K_a or event.key == pygame.K_LEFT))):
                     moveLeft = False
                     moveRight = True
