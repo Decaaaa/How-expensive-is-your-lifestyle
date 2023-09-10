@@ -8,16 +8,16 @@ pygame.init()
 window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, pygame.RESIZABLE)
 w, h = window.get_size()
 
-mainbgInit = pygame.image.load(os.path.join("Desktop/EMP Hackathon/", "mainBackground.png"))
+mainbgInit = pygame.image.load(os.path.join("./", "mainBackground.png"))
 mainbg = pygame.transform.scale(mainbgInit, (w, h))
 
-bobStandingInit = pygame.image.load(os.path.join("Desktop/EMP Hackathon/", "bobStanding.png"))
+bobStandingInit = pygame.image.load(os.path.join("./", "bobStanding.png"))
 bobStanding = pygame.transform.scale(bobStandingInit, (w * 98/1600, h * 245/900))
 
-bobRightInit = pygame.image.load(os.path.join("Desktop/EMP Hackathon/", "bobRight.png"))
+bobRightInit = pygame.image.load(os.path.join("./", "bobRight.png"))
 bobRight = pygame.transform.scale(bobRightInit, (w * 98/1600, h * 245/900))
 
-bobLeftInit = pygame.image.load(os.path.join("Desktop/EMP Hackathon/", "bobLeft.png"))
+bobLeftInit = pygame.image.load(os.path.join("./", "bobLeft.png"))
 bobLeft = pygame.transform.scale(bobLeftInit, (w * 98/1600, h * 245/900))
 
 playerX = w * 40/1600

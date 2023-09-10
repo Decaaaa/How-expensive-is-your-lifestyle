@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-os.chdir("C:/Users/Avkb8/Desktop/EMP Hackathon")
+#os.chdir("C:/Users/Avkb8/Desktop/EMP Hackathon")
 
 pygame.init()
 
@@ -14,6 +14,12 @@ mainbg = pygame.transform.scale(mainbgInit, (w, h))
 
 bgInit = pygame.image.load(os.path.join("./", "background.png"))
 bg = pygame.transform.scale(bgInit, (w, h))
+
+instructbgInit = pygame.image.load(os.path.join("./", "InstructionsBackground.png"))
+instructbg = pygame.transform.scale(instructbgInit, (w, h))
+
+tcBGInit = pygame.image.load(os.path.join("./", "tcBackground.png"))
+tcBG = pygame.transform.scale(tcBGInit, (w, h))
 
 bbgInit = pygame.image.load(os.path.join("./", "blurredBackground.png"))
 bbg = pygame.transform.scale(bbgInit, (w, h))
@@ -90,16 +96,17 @@ answers = [
 
 reviewLines = [
 
-    'It is best to either have a balanced diet when it comes to meat and vegetables, or reduce it as much as possible, due to the many environmental costs they have.',
+    'It is best to either have a balanced diet when it comes to meat and vegetables, or reduce it as much as possible.',
     'Most houses are made of wood, which is much better than bricks and concrete.',
     'The average number of persons per household is 2.55 people.',
-    'The average amount of electricity used per month is 1,037 kWh per person. For reference, air condition itself uses about 1,000 kWh per month, a fridge uses about 27-30 kWhs, and heaters use anywhere from 500-700 kWh.',
+    'The average amount of electricity used per month is 1,037 kWh per person.',
     'The average amount of water used per person per day is around 120 gallons per day.'
 
 ]
 
 neededReviewLines = []
 
+smallFont = pygame.font.Font('freesansbold.ttf', int(w * 25/1600))
 font = pygame.font.Font('freesansbold.ttf', int(w * 50/1600))
 midFont = pygame.font.Font('freesansbold.ttf', int(w * 75/1600))
 bigFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
@@ -181,10 +188,10 @@ while play:
             window.blit(doorClosed, (w * 1170/1600, h * 450/900))
     
         if ((moveRight and not moveLeft) and (playerX <= w * 1530/1600)):
-            playerX += w * 20/1600
+            playerX += w * 5/1600
             window.blit(bobRight, (playerX, h * 525/900))
         elif ((moveLeft) and (playerX >= w * 20/1600)):
-            playerX -= w * 20/1600
+            playerX -= w * 5/1600
             window.blit(bobLeft, (playerX, h * 525/900))           
         else:
             window.blit(bobStanding, (playerX, h * 525/900))
@@ -225,8 +232,43 @@ while play:
 
     elif screen == 3:
         
+        print(neededReviewLines) #debugging
+        index = 0
+        
         window.blit(bbg, (0, 0))
-
+        
+        if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900):
+            window.blit(quitHov, (w * 500/1600, h * 750/900))
+        else:
+            window.blit(quit, (w * 500/1600, h * 750/900))
+            
+        if susScore >= 7:
+            title = font.render('You do not have a sustainable lifestyle!', True, (0,0,0), None)
+            window.blit(title, (w * 200/1600, h * 100/900))
+            title = font.render('But that is ok.', True, (0,0,0), None)
+            window.blit(title, (w * 500/1600, h * 150/900))
+        else:
+            title = font.render('You have a sustainable lifestyle!', True, (0,0,0), None)
+            window.blit(title, (w * 400/1600, h * 50/900))
+            
+        for i in neededReviewLines:
+            line = smallFont.render(i, True, (0,0,0), None)
+            window.blit(line, (w * 60/1600, (h * 400/900 + 50 * index)))
+            index += 1
+            
+    elif screen == 4:
+        window.blit(instructbg, (0, 0))
+        if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900):
+            window.blit(backHov, (w * 500/1600, h * 750/900))
+        else:
+            window.blit(back, (w * 500/1600, h * 750/900))
+            
+    elif screen == 5:
+        window.blit(tcBG, (0, 0))
+        if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900):
+            window.blit(backHov, (w * 500/1600, h * 750/900))
+        else:
+            window.blit(back, (w * 500/1600, h * 750/900))   
 
     for event in pygame.event.get():
         
@@ -242,6 +284,14 @@ while play:
             if (x > w * 900/1600  and x < w * 1500/1600 and y > h * 160/900 and y < h * 280/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 screen = 1
             elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 640/900 and y < h * 760/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                play = False
+            elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 320/900 and y < h * 440/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 4
+            elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 480/900 and y < h * 600/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 5
+                
+        elif screen == 3:
+            if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 play = False
         
         elif screen == 1:
@@ -327,5 +377,10 @@ while play:
             
             if (len(questions) == 0):
                 screen = 3
+                
+        elif screen == 3 or 4:
+            if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 0
+                
 
     pygame.display.update()
