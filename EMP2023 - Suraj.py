@@ -1,18 +1,26 @@
 import pygame
 import os
 import random
+from pygame import mixer
 
 pygame.init()
+mixer.init()
 
 #makes window and sets main menu background
 window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, pygame.RESIZABLE)
 w, h = window.get_size()
 
+mainbgInit = pygame.image.load(os.path.join("./", "mainBackground.png"))
+mainbg = pygame.transform.scale(mainbgInit, (w, h))
+
 bgInit = pygame.image.load(os.path.join("./", "background.png"))
 bg = pygame.transform.scale(bgInit, (w, h))
 
-mainbgInit = pygame.image.load(os.path.join("./", "mainBackground.png"))
-mainbg = pygame.transform.scale(mainbgInit, (w, h))
+instructbgInit = pygame.image.load(os.path.join("./", "InstructionsBackground.png"))
+instructbg = pygame.transform.scale(instructbgInit, (w, h))
+
+tcBGInit = pygame.image.load(os.path.join("./", "tcBackground.png"))
+tcBG = pygame.transform.scale(tcBGInit, (w, h))
 
 #quit button all initialized and scaled here
 #-------------
@@ -52,6 +60,12 @@ bobRight = pygame.transform.scale(bobRightInit, (w * 98/1600, h * 245/900))
 bobLeftInit = pygame.image.load(os.path.join("./", "bobLeft.png"))
 bobLeft = pygame.transform.scale(bobLeftInit, (w * 98/1600, h * 245/900))
 
+doorOpenInit = pygame.image.load(os.path.join("./", "doorOpen.png"))
+doorOpen = pygame.transform.scale(doorOpenInit, (w * 140/1600, h * 290/900))
+
+doorClosedInit = pygame.image.load(os.path.join("./", "doorClosed.png"))
+doorClosed = pygame.transform.scale(doorClosedInit, (w * 140/1600, h * 290/900))
+
 playerX = w * 40/1600
 moveRight = False
 moveLeft = False
@@ -64,6 +78,7 @@ while play:
     x, y = pygame.mouse.get_pos()
     
     if screen == 0:
+
         window.blit(bg, (0, 0))
         
         #quit button
@@ -87,8 +102,26 @@ while play:
         else:
             window.blit(tcBut, (w * 900/1600, h * 480/900))
             
-    if screen == 1:
+        pygame.display.update()
+
+    elif screen == 1:
+
         window.blit(mainbg, (0, 0))
+
+        if ((playerX > 190) and (playerX < 430)):
+            window.blit(doorOpen, (290, 450))
+        else:
+            window.blit(doorClosed, (290, 450))
+
+        if ((playerX > 630) and (playerX < 870)):
+            window.blit(doorOpen, (730, 450))
+        else:
+            window.blit(doorClosed, (730, 450))
+        
+        if ((playerX > 1070) and (playerX < 1310)):
+            window.blit(doorOpen, (1170, 450))
+        else:
+            window.blit(doorClosed, (1170, 450))
     
         if ((moveRight and not moveLeft) and (playerX <= w * 1530/1600)):
             playerX += w * 20/1600
@@ -99,6 +132,21 @@ while play:
         else:
             window.blit(bobStanding, (playerX, h * 525/900))
     
+    elif screen == 2:
+        
+        window.blit(instructbg, (0, 0))
+        if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900):
+            window.blit(backHov, (w * 500/1600, h * 750/900))
+        else:
+            window.blit(back, (w * 500/1600, h * 750/900))
+            
+    elif screen == 3:
+        window.blit(tcBG, (0, 0))
+        if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900):
+            window.blit(backHov, (w * 500/1600, h * 750/900))
+        else:
+            window.blit(back, (w * 500/1600, h * 750/900))      
+
     for event in pygame.event.get():
         
         #remove later
@@ -110,13 +158,24 @@ while play:
             play = False
         
         if screen == 0:
-            if (x > w * 900/1600  and x < w * 1500/1600 and y > h * 640/900 and y < h * 760/900 and event.type == pygame.MOUSEBUTTONDOWN):
-                play = False
-            elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 160/900  and y < h * 280/900 and event.type == pygame.MOUSEBUTTONDOWN):
+            if (x > w * 900/1600  and x < w * 1500/1600 and y > h * 160/900 and y < h * 280/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 screen = 1
-                
-        if screen == 1:
+            elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 320/900 and y < h * 440/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 2
+            elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 640/900 and y < h * 760/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                play = False
+            elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 480/900 and y < h * 600/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 3
+        
+        elif screen == 1:
             if event.type == pygame.KEYDOWN:
+                if (event.key == pygame.K_SPACE):
+                    if ((playerX > 190) and (playerX < 430)):
+                        screen = 3
+                    if ((playerX > 630) and (playerX < 870)):
+                        screen = 4
+                    if ((playerX > 1070) and (playerX < 1310)):
+                        sceen = 5
                 if ((event.key == pygame.K_d or event.key == pygame.K_RIGHT) and (not (event.key == pygame.K_a or event.key == pygame.K_LEFT))):
                     moveLeft = False
                     moveRight = True
@@ -130,5 +189,13 @@ while play:
                 elif (event.key == pygame.K_a or event.key == pygame.K_LEFT):
                     moveRight = False
                     moveLeft = False
+                    
+        elif screen == 2:
+            if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 0
+                
+        elif screen == 3:
+            if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 0
                 
     pygame.display.update()
