@@ -8,7 +8,7 @@ pygame.init()
 window = pygame.display.set_mode((0, 0), pygame.FULLSCREEN, pygame.RESIZABLE)
 w, h = window.get_size()
 
-bgInit = pygame.image.load(os.path.join("./", "Title_screen.png"))
+bgInit = pygame.image.load(os.path.join("./", "background.png"))
 bg = pygame.transform.scale(bgInit, (w, h))
 
 #quit button all initialized and scaled here
