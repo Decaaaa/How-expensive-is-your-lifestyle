@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-#os.chdir("C:/Users/Avkb8/Desktop/EMP Hackathon")
+os.chdir("C:/Users/Suraj/Downloads/How-expensive-is-your-lifestyle-main/How-expensive-is-your-lifestyle-main")
 
 pygame.init()
 
@@ -411,7 +411,7 @@ while play:
                 pygame.mixer.music.load('endMusic.mp3')
                 pygame.mixer.music.play()
                 
-        elif screen == 3 or screen == 4:
+        elif screen == 3 or 4:
             if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 screen = 0
                 
