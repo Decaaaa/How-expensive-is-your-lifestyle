@@ -251,10 +251,14 @@ while play:
             title = font.render('You have a sustainable lifestyle!', True, (0,0,0), None)
             window.blit(title, (w * 400/1600, h * 50/900))
             
-        for i in neededReviewLines:
-            line = smallFont.render(i, True, (0,0,0), None)
-            window.blit(line, (w * 60/1600, (h * 400/900 + 50 * index)))
-            index += 1
+        if len(neededReviewLines) > 0:              
+            title = font.render('Compared to others in Washington:', True, (0,0,0), None)
+            window.blit(title, (w * 60/1600, h * 300/900))
+                
+            for i in neededReviewLines:
+                line = smallFont.render(i, True, (0,0,0), None)
+                window.blit(line, (w * 60/1600, (h * 400/900 + 50 * index)))
+                index += 1
             
     elif screen == 4:
         window.blit(instructbg, (0, 0))
