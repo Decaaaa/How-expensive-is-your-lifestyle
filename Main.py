@@ -219,3 +219,47 @@ while play:
             
 
     pygame.display.update()
+
+
+
+
+
+
+
+
+button1Text = font.render('Button 1 ', True, (255, 255, 255), None)
+button2Text = font.render('Button 2 ', True, (255, 255, 255), None)
+button3Text = font.render('Button 3 ', True, (255, 255, 255), None)
+
+button1Rect = pygame.Rect(w * 100/1600, h * 400/900, w * 400/1600, h * 80/900)
+button2Rect = pygame.Rect(w * 100/1600, h * 500/900, w * 400/1600, h * 80/900)
+button3Rect = pygame.Rect(w * 100/1600, h * 600/900, w * 400/1600, h * 80/900)
+
+# Check if the mouse is over any button
+if button1Rect.collidepoint(x, y):
+    pygame.draw.rect(window, (100, 100, 100), button1Rect)  # Change color when hovered
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        # Handle button 1 click action
+        pass
+
+if button2Rect.collidepoint(x, y):
+    pygame.draw.rect(window, (100, 100, 100), button2Rect)  # Change color when hovered
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        # Handle button 2 click action
+        pass
+
+if button3Rect.collidepoint(x, y):
+    pygame.draw.rect(window, (100, 100, 100), button3Rect)  # Change color when hovered
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        # Handle button 3 click action
+        pass
+
+# Draw buttons and text
+pygame.draw.rect(window, (0, 0, 0), button1Rect, 2)  # Draw button border
+window.blit(button1Text, (w * 100/1600 + 10, h * 400/900 + 10))
+
+pygame.draw.rect(window, (0, 0, 0), button2Rect, 2)  # Draw button border
+window.blit(button2Text, (w * 100/1600 + 10, h * 500/900 + 10))
+
+pygame.draw.rect(window, (0, 0, 0), button3Rect, 2)  # Draw button border
+window.blit(button3Text, (w * 100/1600 + 10, h * 600/900 + 10))
