@@ -15,6 +15,9 @@ mainbg = pygame.transform.scale(mainbgInit, (w, h))
 bgInit = pygame.image.load(os.path.join("./", "background.png"))
 bg = pygame.transform.scale(bgInit, (w, h))
 
+bbgInit = pygame.image.load(os.path.join("./", "blurrBackground.png"))
+bbg = pygame.transform.scale(bbgInit, (w, h))
+
 #quit button all initialized and scaled here
 #-------------
 quitInit = pygame.image.load(os.path.join("./", "quit.png"))
@@ -80,16 +83,17 @@ answers = [
     'Below Average - poor insulation, non-LED lights, heating/cooling systems used often',
     'Average - Modern appliances, climate controls',
     'Above average - well insulated, efficient lighting and appliances, careful use',
-    'Below Average - <80 gallons of water per day'
-    'Average - 80-140 gallons per day'
+    'Below Average - <80 gallons of water per day',
+    'Average - 80-140 gallons per day',
     'Above Average - 140+ gallons per day'
 ]
 
 font = pygame.font.Font('freesansbold.ttf', int(w * 50/1600))
-doorFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
+midFont = pygame.font.Font('freesansbold.ttf', int(w * 75/1600))
+bigFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
 ##-------------
-doorText = doorFont.render('Choose a path:', True, (255,255,255), None)
-doorText2 = doorFont.render('(go to door and press space)', True, (255,255,255), None)
+doorText = bigFont.render('Choose a path:', True, (255,255,255), None)
+doorText2 = bigFont.render('(go to door and press space)', True, (255,255,255), None)
 
 ind = 0
 qI = random.randint(0, len(questions) - 1)
@@ -98,11 +102,17 @@ currAnswers = []
 for i in range(3):
     currAnswers.append(answers[qI * 3 + i])
 
+button1Rect = pygame.Rect(w * 0/1600, h * 250/900, w * 1600/1600, h * 80/900)
+button2Rect = pygame.Rect(w * 0/1600, h * 400/900, w * 1600/1600, h * 80/900)
+button3Rect = pygame.Rect(w * 0/1600, h * 550/900, w * 1600/1600, h * 80/900)
+answerButtons = [button1Rect, button2Rect, button3Rect]
+
 playerX = w * 40/1600
 moveRight = False
 moveLeft = False
 
 play = True
+congradulate = 0
 
 screen = 0
 
@@ -173,7 +183,44 @@ while play:
 
         question = font.render('Question: ' + questions[qI], True, (0,0,0), None)
         window.blit(question,(w * 50/1600, h * 50/900))
+        
+        if button1Rect.collidepoint(x, y):
+            pygame.draw.rect(window, (0, 255, 0), button1Rect)
+        else:
+            pygame.draw.rect(window, (0, 0, 0), button1Rect)
+        if button2Rect.collidepoint(x, y):
+            pygame.draw.rect(window, (0, 255, 0), button2Rect)
+        else:
+            pygame.draw.rect(window, (0, 0, 0), button2Rect)
+        if button3Rect.collidepoint(x, y):
+            pygame.draw.rect(window, (0, 255, 0), button3Rect)
+        else:
+            pygame.draw.rect(window, (0, 0, 0), button3Rect)
 
+        button1Text = font.render(currAnswers[0], True, (255, 255, 255), None)
+        button2Text = font.render(currAnswers[1], True, (255, 255, 255), None)
+        button3Text = font.render(currAnswers[2], True, (255, 255, 255), None)
+        
+        # Draw buttons and text
+        pygame.draw.rect(window, (0, 0, 0), button1Rect, 2)  # Draw button border
+        window.blit(button1Text, (w * 5/1600, h * 250/900 + 10))
+
+        pygame.draw.rect(window, (0, 0, 0), button2Rect, 2)  # Draw button border
+        window.blit(button2Text, (w * 5/1600, h * 400/900 + 10))
+
+        pygame.draw.rect(window, (0, 0, 0), button3Rect, 2)  # Draw button border
+        window.blit(button3Text, (w * 5/1600, h * 550/900 + 10))
+
+    elif screen == 4:
+        
+        window.blit(bbg, (0, 0))
+
+        if (answer == 0):
+            window.blit(midFont.render('Good Job! You chose sustainably!', True, (255,255,255), None),(w * 150/1600, h * 400/900))
+        elif (answer == 1):
+            window.blit(midFont.render('Almost there! Just a little bit more effort.', True, (255,255,255), None),(w * 50/1600, h * 400/900))
+        elif (answer == 2):
+            window.blit(midFont.render('Better luck next time!', True, (255,255,255), None),(w * 400/1600, h * 400/900))
 
 
     for event in pygame.event.get():
@@ -215,72 +262,18 @@ while play:
                     moveRight = False
                     moveLeft = False
 
-        #elif (screen == 3):
+        elif screen == 3:
             
+            if (button1Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 4
+                answer = 0
+
+            elif (button2Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 4
+                answer = 1
+
+            elif (button3Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 4
+                answer = 2
 
     pygame.display.update()
-
-
-
-
-
-
-
-
-# Inside the while loop where screen == 3:
-elif screen == 3:
-    window.blit(mainbg, (0, 0))
-
-    question = font.render('Question: ' + questions[qI], True, (0, 0, 0), None)
-    window.blit(question, (w * 50/1600, h * 50/900))
-
-    # Create buttons for the third screen
-    button1Text = font.render('Button 1 Text', True, (255, 255, 255), None)
-    button2Text = font.render('Button 2 Text', True, (255, 255, 255), None)
-    button3Text = font.render('Button 3 Text', True, (255, 255, 255), None)
-
-    button1Rect = pygame.Rect(w * 100/1600, h * 400/900, w * 400/1600, h * 80/900)
-    button2Rect = pygame.Rect(w * 100/1600, h * 500/900, w * 400/1600, h * 80/900)
-    button3Rect = pygame.Rect(w * 100/1600, h * 600/900, w * 400/1600, h * 80/900)
-
-    # Check if the mouse is over any button
-    if button1Rect.collidepoint(x, y):
-        pygame.draw.rect(window, (0, 255, 0), button1Rect)  # Change color to green when hovered
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # Handle button 1 click action
-            pass
-    else:
-        pygame.draw.rect(window, (0, 0, 0), button1Rect)  # Change color to black when not hovered
-
-    if button2Rect.collidepoint(x, y):
-        pygame.draw.rect(window, (0, 255, 0), button2Rect)  # Change color to green when hovered
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # Handle button 2 click action
-            pass
-    else:
-        pygame.draw.rect(window, (0, 0, 0), button2Rect)  # Change color to black when not hovered
-
-    if button3Rect.collidepoint(x, y):
-        pygame.draw.rect(window, (0, 255, 0), button3Rect)  # Change color to green when hovered
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # Handle button 3 click action
-            pass
-    else:
-        pygame.draw.rect(window, (0, 0, 0), button3Rect)  # Change color to black when not hovered
-
-    # Draw buttons and text
-    pygame.draw.rect(window, (0, 0, 0), button1Rect, 2)  # Draw button border
-    window.blit(button1Text, (w * 100/1600 + 10, h * 400/900 + 10))
-
-    pygame.draw.rect(window, (0, 0, 0), button2Rect, 2)  # Draw button border
-    window.blit(button2Text, (w * 100/1600 + 10, h * 500/900 + 10))
-
-    pygame.draw.rect(window, (0, 0, 0), button3Rect, 2)  # Draw button border
-    window.blit(button3Text, (w * 100/1600 + 10, h * 600/900 + 10))
-
-# ... (remaining code)
-
-window.blit(button2Text, (w * 100/1600 + 10, h * 500/900 + 10))
-
-pygame.draw.rect(window, (0, 0, 0), button3Rect, 2)  # Draw button border
-window.blit(button3Text, (w * 100/1600 + 10, h * 600/900 + 10))
