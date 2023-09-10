@@ -59,27 +59,15 @@ doorOpen = pygame.transform.scale(doorOpenInit, (w * 140/1600, h * 290/900))
 doorClosedInit = pygame.image.load(os.path.join("./", "doorClosed.png"))
 doorClosed = pygame.transform.scale(doorClosedInit, (w * 140/1600, h * 290/900))
 
-character_buttons = {
-    "Bob": pygame.Rect(w * 200 / 1600, h * 400 / 900, w * 100 / 1600, h * 50 / 900),
-    "Lad": pygame.Rect(w * 400 / 1600, h * 400 / 900, w * 100 / 1600, h * 50 / 900),
-    "Debag": pygame.Rect(w * 600 / 1600, h * 400 / 900, w * 100 / 1600, h * 50 / 900),
-}
-
-text = pygame.font.Font(None, 36).render(character, True, (255, 255, 255))
-text_rect = text.get_rect(center=rect.center)
-window.blit(text, text_rect)
-
-ind = 0
-
-questions = {
+questions = [
     'How often do you eat animal-based products?',
     'What material is your house constructed with?',
     'How many people live in your household?',
     'How energy efficient is your home?',
     'Approximately how much water do you use a day?'
-}
+]
 
-answers = {
+answers = [
     'Never/barely',
     'Occasionally - Once or twice a week',
     'Often',
@@ -95,7 +83,7 @@ answers = {
     'Below Average - <80 gallons of water per day'
     'Average - 80-140 gallons per day'
     'Above Average - 140+ gallons per day'
-}
+]
 
 font = pygame.font.Font('freesansbold.ttf', int(w * 50/1600))
 doorFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
@@ -103,11 +91,12 @@ doorFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
 doorText = doorFont.render('Choose a path:', True, (255,255,255), None)
 doorText2 = doorFont.render('(go to door and press space)', True, (255,255,255), None)
 
-qI = random.randint(0, len(questions))
+ind = 0
+qI = random.randint(0, len(questions) - 1)
 
-currAnswers = {}
+currAnswers = []
 for i in range(3):
-    currAnswers.append(answers[qI * 3 + i]: pygame.Rect(w * 200 / 1600, h * 400 / 900, w * 100 / 1600, h * 50 / 900))
+    currAnswers.append(answers[qI * 3 + i])
 
 playerX = w * 40/1600
 moveRight = False
@@ -183,7 +172,7 @@ while play:
         window.blit(mainbg, (0, 0))
 
         question = font.render('Question: ' + questions[qI], True, (0,0,0), None)
-        window.blit(question)
+        window.blit(question,(w * 50/1600, h * 50/900))
 
 
 
@@ -205,12 +194,6 @@ while play:
         
         elif screen == 2:
             if event.type == pygame.KEYDOWN:
-                ind = 0
-                for character, rect in character_buttons.items():
-                    ind+=1
-                    if rect.collidepoint(x, y):
-                        if pygame.mouse.get_pressed()[0]:
-                            answer = ind
                 if (event.key == pygame.K_SPACE):
                     if ((playerX > w * 190/1600) and (playerX < w * 430/1600)):
                         screen = 3
@@ -232,7 +215,7 @@ while play:
                     moveRight = False
                     moveLeft = False
 
-        elif (screen == 3):
+        #elif (screen == 3):
             
 
     pygame.display.update()
