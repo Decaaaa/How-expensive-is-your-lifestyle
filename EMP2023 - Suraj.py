@@ -11,6 +11,9 @@ w, h = window.get_size()
 bgInit = pygame.image.load(os.path.join("./", "background.png"))
 bg = pygame.transform.scale(bgInit, (w, h))
 
+mainbgInit = pygame.image.load(os.path.join("./", "mainBackground.png"))
+mainbg = pygame.transform.scale(mainbgInit, (w, h))
+
 #quit button all initialized and scaled here
 #-------------
 quitInit = pygame.image.load(os.path.join("./", "quit.png"))
@@ -39,6 +42,19 @@ tcButInit = pygame.image.load(os.path.join("./", "causeBut.png"))
 tcBut = pygame.transform.scale(tcButInit, (w * 600/1600, h * 120/900))
 tcButHovInit = pygame.image.load(os.path.join("./", "causeButHov.png"))
 tcButHov = pygame.transform.scale(tcButHovInit, (w * 600/1600, h * 120/900))
+
+bobStandingInit = pygame.image.load(os.path.join("./", "bobStanding.png"))
+bobStanding = pygame.transform.scale(bobStandingInit, (w * 98/1600, h * 245/900))
+
+bobRightInit = pygame.image.load(os.path.join("./", "bobRight.png"))
+bobRight = pygame.transform.scale(bobRightInit, (w * 98/1600, h * 245/900))
+
+bobLeftInit = pygame.image.load(os.path.join("./", "bobLeft.png"))
+bobLeft = pygame.transform.scale(bobLeftInit, (w * 98/1600, h * 245/900))
+
+playerX = w * 40/1600
+moveRight = False
+moveLeft = False
 
 play = True
 
@@ -71,7 +87,17 @@ while play:
         else:
             window.blit(tcBut, (w * 900/1600, h * 480/900))
             
-        pygame.display.update()
+    if screen == 1:
+        window.blit(mainbg, (0, 0))
+    
+        if ((moveRight and not moveLeft) and (playerX <= w * 1530/1600)):
+            playerX += w * 20/1600
+            window.blit(bobRight, (playerX, h * 525/900))
+        elif ((moveLeft) and (playerX >= w * 20/1600)):
+            playerX -= w * 20/1600
+            window.blit(bobLeft, (playerX, h * 525/900))           
+        else:
+            window.blit(bobStanding, (playerX, h * 525/900))
     
     for event in pygame.event.get():
         
@@ -86,3 +112,23 @@ while play:
         if screen == 0:
             if (x > w * 900/1600  and x < w * 1500/1600 and y > h * 640/900 and y < h * 760/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 play = False
+            elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 160/900  and y < h * 280/900 and event.type == pygame.MOUSEBUTTONDOWN):
+                screen = 1
+                
+        if screen == 1:
+            if event.type == pygame.KEYDOWN:
+                if ((event.key == pygame.K_d or event.key == pygame.K_RIGHT) and (not (event.key == pygame.K_a or event.key == pygame.K_LEFT))):
+                    moveLeft = False
+                    moveRight = True
+                elif ((event.key == pygame.K_a or event.key == pygame.K_LEFT)):
+                    moveLeft = True
+                    moveRight = False
+            elif (event.type == pygame.KEYUP):
+                if ((event.key == pygame.K_d or event.key == pygame.K_RIGHT) and (not (event.key == pygame.K_a or event.key == pygame.K_LEFT))):
+                    moveLeft = False
+                    moveRight = False
+                elif (event.key == pygame.K_a or event.key == pygame.K_LEFT):
+                    moveRight = False
+                    moveLeft = False
+                
+    pygame.display.update()
