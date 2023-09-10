@@ -271,40 +271,59 @@ while play:
             
             if (button1Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
                 screen = 1
+
                 length = len(currAnswers)
                 for i in range(length):
-                    answers.remove(currAnswers[length - i - 1])
-                    currAnswers.pop(length - i - 1)
+                    answers.remove(currAnswers.pop(length - i - 1))
                 questions.pop(qI)
-                qI = random.randint(0, len(questions) - 1)
-                for i in range(length):
-                    currAnswers.append(answers[qI * len(currAnswers) + i])
+
+                if (len(questions) > 1):
+                    qI = random.randint(0, len(questions) - 1)
+                elif len(questions) == 1:
+                    qI = 0
+                    
+                if (len(answers) > 0):
+                    for i in range(length):
+                        currAnswers.append(answers[qI * length + i])
                 
             elif (button2Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
                 susScore += 1
                 screen = 1
+
                 length = len(currAnswers)
                 for i in range(length):
-                    answers.remove(currAnswers[length - i - 1])
-                    currAnswers.pop(length - i - 1)
+                    answers.remove(currAnswers.pop(length - i - 1))
                 questions.pop(qI)
-                qI = random.randint(0, len(questions) - 1)
-                for i in range(length):
-                    currAnswers.append(answers[qI * len(currAnswers) + i])
+
+                if (len(questions) > 1):
+                    qI = random.randint(0, len(questions) - 1)
+                elif len(questions) == 1:
+                    qI = 0
+
+                if (len(answers) > 0):
+                    for i in range(length):
+                        currAnswers.append(answers[qI * length + i])
 
             elif (button3Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
+
                 neededReviewLines.append(reviewLines[qI])
                 reviewLines.pop(qI)
                 susScore += 2
                 screen = 1
+
                 length = len(currAnswers)
                 for i in range(length):
-                    answers.remove(currAnswers[length - i - 1])
-                    currAnswers.pop(length - i - 1)
+                    answers.remove(currAnswers.pop(length - i - 1))
                 questions.pop(qI)
-                qI = random.randint(0, len(questions) - 1)
-                for i in range(length):
-                    currAnswers.append(answers[qI * len(currAnswers) + i])
+
+                if (len(questions) > 1):
+                    qI = random.randint(0, len(questions) - 1)
+                elif len(questions) == 1:
+                    qI = 0
+
+                if (len(answers) > 0):
+                    for i in range(length):
+                        currAnswers.append(answers[qI * length + i])
             
             if (len(questions) == 0):
                 screen = 3
