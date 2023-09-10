@@ -1,7 +1,7 @@
 import pygame
 import os
 import random
-#os.chdir("C:/Users/Avkb8/Desktop/EMP Hackathon")
+os.chdir("C:/Users/Avkb8/Desktop/EMP Hackathon")
 
 pygame.init()
 
@@ -135,10 +135,19 @@ susScore = 0
 
 screen = 0
 
+
+pygame.mixer.init()
+pygame.mixer.music.load('begMusic.mp3')
+pygame.mixer.music.play()
+
 while play:
+
     x, y = pygame.mouse.get_pos()
     
     if screen == 0:
+
+        if (not pygame.mixer.get_busy()):
+            pygame.mixer.music.queue('begMusic.mp3')
 
         window.blit(bg, (0, 0))
         
@@ -167,6 +176,9 @@ while play:
 
     elif screen == 1:
         
+        if (not pygame.mixer.get_busy()):
+            pygame.mixer.music.queue('midMusic.mp3')
+
         window.blit(mainbg, (0, 0))
 
         window.blit(doorText, (w * 450/1600, h * 100/900))
@@ -188,15 +200,18 @@ while play:
             window.blit(doorClosed, (w * 1170/1600, h * 450/900))
     
         if ((moveRight and not moveLeft) and (playerX <= w * 1530/1600)):
-            playerX += w * 5/1600
+            playerX += w * 20/1600
             window.blit(bobRight, (playerX, h * 525/900))
         elif ((moveLeft) and (playerX >= w * 20/1600)):
-            playerX -= w * 5/1600
+            playerX -= w * 20/1600
             window.blit(bobLeft, (playerX, h * 525/900))           
         else:
             window.blit(bobStanding, (playerX, h * 525/900))
 
     elif (screen == 2):
+
+        if (not pygame.mixer.get_busy()):
+            pygame.mixer.music.queue('midMusic.mp3')
 
         window.blit(mainbg, (0, 0))
 
@@ -231,8 +246,10 @@ while play:
         window.blit(button3Text, (w * 5/1600, h * 550/900 + 10))
 
     elif screen == 3:
-        
-        print(neededReviewLines) #debugging
+
+        if (not pygame.mixer.get_busy()):
+            pygame.mixer.music.queue('endMusic.mp3')
+
         index = 0
         
         window.blit(bbg, (0, 0))
@@ -261,6 +278,10 @@ while play:
                 index += 1
             
     elif screen == 4:
+
+        if (not pygame.mixer.get_busy()):
+            pygame.mixer.music.queue('begMusic.mp3')
+
         window.blit(instructbg, (0, 0))
         if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900):
             window.blit(backHov, (w * 500/1600, h * 750/900))
@@ -268,6 +289,10 @@ while play:
             window.blit(back, (w * 500/1600, h * 750/900))
             
     elif screen == 5:
+
+        if (not pygame.mixer.get_busy()):
+            pygame.mixer.music.queue('begMusic.mp3')
+
         window.blit(tcBG, (0, 0))
         if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900):
             window.blit(backHov, (w * 500/1600, h * 750/900))
@@ -287,6 +312,8 @@ while play:
         if screen == 0:
             if (x > w * 900/1600  and x < w * 1500/1600 and y > h * 160/900 and y < h * 280/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 screen = 1
+                pygame.mixer.music.load('midMusic.mp3')
+                pygame.mixer.music.play()
             elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 640/900 and y < h * 760/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 play = False
             elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 320/900 and y < h * 440/900 and event.type == pygame.MOUSEBUTTONDOWN):
@@ -381,8 +408,10 @@ while play:
             
             if (len(questions) == 0):
                 screen = 3
+                pygame.mixer.music.load('endMusic.mp3')
+                pygame.mixer.music.play()
                 
-        elif screen == 3 or 4:
+        elif screen == 3 or screen == 4:
             if (x > w * 500/1600  and x < w * 1100/1600 and y > h * 750/900 and y < h * 870/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 screen = 0
                 
