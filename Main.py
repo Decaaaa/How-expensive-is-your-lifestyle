@@ -15,7 +15,7 @@ mainbg = pygame.transform.scale(mainbgInit, (w, h))
 bgInit = pygame.image.load(os.path.join("./", "background.png"))
 bg = pygame.transform.scale(bgInit, (w, h))
 
-bbgInit = pygame.image.load(os.path.join("./", "blurrBackground.png"))
+bbgInit = pygame.image.load(os.path.join("./", "blurredBackground.png"))
 bbg = pygame.transform.scale(bbgInit, (w, h))
 
 #quit button all initialized and scaled here
@@ -88,6 +88,18 @@ answers = [
     'Above Average - 140+ gallons per day'
 ]
 
+reviewLines = [
+
+    'It is best to either have a balanced diet when it comes to meat and vegetables, or reduce it as much as possible, due to the many environmental costs they have.',
+    'Most houses are made of wood, which is much better than bricks and concrete.',
+    'The average number of persons per household is 2.55 people.',
+    'The average amount of electricity used per month is 1,037 kWh per person. For reference, air condition itself uses about 1,000 kWh per month, a fridge uses about 27-30 kWhs, and heaters use anywhere from 500-700 kWh.',
+    'The average amount of water used per person per day is around 120 gallons per day.'
+
+]
+
+neededReviewLines = []
+
 font = pygame.font.Font('freesansbold.ttf', int(w * 50/1600))
 midFont = pygame.font.Font('freesansbold.ttf', int(w * 75/1600))
 bigFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
@@ -95,7 +107,6 @@ bigFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
 doorText = bigFont.render('Choose a path:', True, (255,255,255), None)
 doorText2 = bigFont.render('(go to door and press space)', True, (255,255,255), None)
 
-ind = 0
 qI = random.randint(0, len(questions) - 1)
 
 currAnswers = []
@@ -112,7 +123,8 @@ moveRight = False
 moveLeft = False
 
 play = True
-congradulate = 0
+
+susScore = 0
 
 screen = 0
 
@@ -146,7 +158,7 @@ while play:
             
         pygame.display.update()
 
-    elif screen == 2:
+    elif screen == 1:
         
         window.blit(mainbg, (0, 0))
 
@@ -177,7 +189,7 @@ while play:
         else:
             window.blit(bobStanding, (playerX, h * 525/900))
 
-    elif (screen == 3):
+    elif (screen == 2):
 
         window.blit(mainbg, (0, 0))
 
@@ -211,16 +223,9 @@ while play:
         pygame.draw.rect(window, (0, 0, 0), button3Rect, 2)  # Draw button border
         window.blit(button3Text, (w * 5/1600, h * 550/900 + 10))
 
-    elif screen == 4:
+    elif screen == 3:
         
         window.blit(bbg, (0, 0))
-
-        if (answer == 0):
-            window.blit(midFont.render('Good Job! You chose sustainably!', True, (255,255,255), None),(w * 150/1600, h * 400/900))
-        elif (answer == 1):
-            window.blit(midFont.render('Almost there! Just a little bit more effort.', True, (255,255,255), None),(w * 50/1600, h * 400/900))
-        elif (answer == 2):
-            window.blit(midFont.render('Better luck next time!', True, (255,255,255), None),(w * 400/1600, h * 400/900))
 
 
     for event in pygame.event.get():
@@ -235,19 +240,19 @@ while play:
         
         if screen == 0:
             if (x > w * 900/1600  and x < w * 1500/1600 and y > h * 160/900 and y < h * 280/900 and event.type == pygame.MOUSEBUTTONDOWN):
-                screen = 2
+                screen = 1
             elif (x > w * 900/1600  and x < w * 1500/1600 and y > h * 640/900 and y < h * 760/900 and event.type == pygame.MOUSEBUTTONDOWN):
                 play = False
         
-        elif screen == 2:
+        elif screen == 1:
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_SPACE):
                     if ((playerX > w * 190/1600) and (playerX < w * 430/1600)):
-                        screen = 3
+                        screen = 2
                     if ((playerX > w * 630/1600) and (playerX < w * 870/1600)):
-                        screen = 3
+                        screen = 2
                     if ((playerX > w * 1070/1600) and (playerX < w * 1310/1600)):
-                        sceen = 3
+                        screen = 2
                 if ((event.key == pygame.K_d or event.key == pygame.K_RIGHT) and (not (event.key == pygame.K_a or event.key == pygame.K_LEFT))):
                     moveLeft = False
                     moveRight = True
@@ -262,18 +267,46 @@ while play:
                     moveRight = False
                     moveLeft = False
 
-        elif screen == 3:
+        elif screen == 2:
             
             if (button1Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
-                screen = 4
-                answer = 0
-
+                screen = 1
+                length = len(currAnswers)
+                for i in range(length):
+                    answers.remove(currAnswers[length - i - 1])
+                    currAnswers.pop(length - i - 1)
+                questions.pop(qI)
+                qI = random.randint(0, len(questions) - 1)
+                for i in range(length):
+                    currAnswers.append(answers[qI * len(currAnswers) + i])
+                
             elif (button2Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
-                screen = 4
-                answer = 1
+                susScore += 1
+                screen = 1
+                length = len(currAnswers)
+                for i in range(length):
+                    answers.remove(currAnswers[length - i - 1])
+                    currAnswers.pop(length - i - 1)
+                questions.pop(qI)
+                qI = random.randint(0, len(questions) - 1)
+                for i in range(length):
+                    currAnswers.append(answers[qI * len(currAnswers) + i])
 
             elif (button3Rect.collidepoint(x, y)) and (event.type == pygame.MOUSEBUTTONDOWN):
-                screen = 4
-                answer = 2
+                neededReviewLines.append(reviewLines[qI])
+                reviewLines.pop(qI)
+                susScore += 2
+                screen = 1
+                length = len(currAnswers)
+                for i in range(length):
+                    answers.remove(currAnswers[length - i - 1])
+                    currAnswers.pop(length - i - 1)
+                questions.pop(qI)
+                qI = random.randint(0, len(questions) - 1)
+                for i in range(length):
+                    currAnswers.append(answers[qI * len(currAnswers) + i])
+            
+            if (len(questions) == 0):
+                screen = 3
 
     pygame.display.update()
