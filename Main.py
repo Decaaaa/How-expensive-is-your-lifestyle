@@ -59,12 +59,42 @@ doorOpen = pygame.transform.scale(doorOpenInit, (w * 140/1600, h * 290/900))
 doorClosedInit = pygame.image.load(os.path.join("./", "doorClosed.png"))
 doorClosed = pygame.transform.scale(doorClosedInit, (w * 140/1600, h * 290/900))
 
+character_buttons = {
+    "Bob": pygame.Rect(w * 200 / 1600, h * 400 / 900, w * 100 / 1600, h * 50 / 900),
+    "Lad": pygame.Rect(w * 400 / 1600, h * 400 / 900, w * 100 / 1600, h * 50 / 900),
+    "Debag": pygame.Rect(w * 600 / 1600, h * 400 / 900, w * 100 / 1600, h * 50 / 900),
+}
+
+text = pygame.font.Font(None, 36).render(character, True, (255, 255, 255))
+text_rect = text.get_rect(center=rect.center)
+window.blit(text, text_rect)
+
+ind = 0
+
 questions = {
     'How often do you eat animal-based products?',
     'What material is your house constructed with?',
     'How many people live in your household?',
     'How energy efficient is your home?',
-    'Compared to your neighbors, how much trash do you generate?'
+    'Approximately how much water do you use a day?'
+}
+
+answers = {
+    'Never/barely',
+    'Occasionally - Once or twice a week',
+    'Often',
+    'Traditional materials - brick and concrete.',
+    'Sustainable and eco-friendly materials such as reclaimed wood, recycled steel, and bamboo.',
+    'A combination of both traditional and eco-friendly materials.',
+    '1-3',
+    '4-6',
+    '7+',
+    'Below Average - poor insulation, non-LED lights, heating/cooling systems used often',
+    'Average - Modern appliances, climate controls',
+    'Above average - well insulated, efficient lighting and appliances, careful use',
+    'Below Average - <80 gallons of water per day'
+    'Average - 80-140 gallons per day'
+    'Above Average - 140+ gallons per day'
 }
 
 font = pygame.font.Font('freesansbold.ttf', int(w * 50/1600))
@@ -73,7 +103,11 @@ doorFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
 doorText = doorFont.render('Choose a path:', True, (255,255,255), None)
 doorText2 = doorFont.render('(go to door and press space)', True, (255,255,255), None)
 
+qI = random.randint(0, len(questions))
 
+currAnswers = {}
+for i in range(3):
+    currAnswers.append(answers[qI * 3 + i]: pygame.Rect(w * 200 / 1600, h * 400 / 900, w * 100 / 1600, h * 50 / 900))
 
 playerX = w * 40/1600
 moveRight = False
@@ -148,6 +182,9 @@ while play:
 
         window.blit(mainbg, (0, 0))
 
+        question = font.render('Question: ' + questions[qI], True, (0,0,0), None)
+        window.blit(question)
+
 
 
     for event in pygame.event.get():
@@ -168,6 +205,12 @@ while play:
         
         elif screen == 2:
             if event.type == pygame.KEYDOWN:
+                ind = 0
+                for character, rect in character_buttons.items():
+                    ind+=1
+                    if rect.collidepoint(x, y):
+                        if pygame.mouse.get_pressed()[0]:
+                            answer = ind
                 if (event.key == pygame.K_SPACE):
                     if ((playerX > w * 190/1600) and (playerX < w * 430/1600)):
                         screen = 3
@@ -188,5 +231,8 @@ while play:
                 elif (event.key == pygame.K_a or event.key == pygame.K_LEFT):
                     moveRight = False
                     moveLeft = False
+
+        elif (screen == 3):
+            
 
     pygame.display.update()
