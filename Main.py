@@ -59,6 +59,22 @@ doorOpen = pygame.transform.scale(doorOpenInit, (w * 140/1600, h * 290/900))
 doorClosedInit = pygame.image.load(os.path.join("./", "doorClosed.png"))
 doorClosed = pygame.transform.scale(doorClosedInit, (w * 140/1600, h * 290/900))
 
+questions = {
+    'How often do you eat animal-based products?',
+    'What material is your house constructed with?',
+    'How many people live in your household?',
+    'How energy efficient is your home?',
+    'Compared to your neighbors, how much trash do you generate?'
+}
+
+font = pygame.font.Font('freesansbold.ttf', int(w * 50/1600))
+doorFont = pygame.font.Font('freesansbold.ttf', int(w * 100/1600))
+##-------------
+doorText = doorFont.render('Choose a path:', True, (255,255,255), None)
+doorText2 = doorFont.render('(go to door and press space)', True, (255,255,255), None)
+
+
+
 playerX = w * 40/1600
 moveRight = False
 moveLeft = False
@@ -98,23 +114,26 @@ while play:
         pygame.display.update()
 
     elif screen == 2:
-
+        
         window.blit(mainbg, (0, 0))
 
-        if ((playerX > 190) and (playerX < 430)):
-            window.blit(doorOpen, (290, 450))
-        else:
-            window.blit(doorClosed, (290, 450))
+        window.blit(doorText, (w * 450/1600, h * 100/900))
+        window.blit(doorText2, (w * 100/1600, h * 200/900))
 
-        if ((playerX > 630) and (playerX < 870)):
-            window.blit(doorOpen, (730, 450))
+        if ((playerX > w * 190/1600) and (playerX < w * 430/1600)):
+            window.blit(doorOpen, (w * 290/1600, h * 450/900))
         else:
-            window.blit(doorClosed, (730, 450))
+            window.blit(doorClosed, (w * 290/1600, h * 450/900))
+
+        if ((playerX > w * 630/1600) and (playerX < w * 870/1600)):
+            window.blit(doorOpen, (w * 730/1600, h * 450/900))
+        else:
+            window.blit(doorClosed, (w * 730/1600, h * 450/900))
         
-        if ((playerX > 1070) and (playerX < 1310)):
-            window.blit(doorOpen, (1170, 450))
+        if ((playerX > w * 1070/1600) and (playerX < 1310)):
+            window.blit(doorOpen, (w * 1170/1600, h * 450/900))
         else:
-            window.blit(doorClosed, (1170, 450))
+            window.blit(doorClosed, (w * 1170/1600, h * 450/900))
     
         if ((moveRight and not moveLeft) and (playerX <= w * 1530/1600)):
             playerX += w * 20/1600
@@ -124,6 +143,12 @@ while play:
             window.blit(bobLeft, (playerX, h * 525/900))           
         else:
             window.blit(bobStanding, (playerX, h * 525/900))
+
+    elif (screen == 3):
+
+        window.blit(mainbg, (0, 0))
+
+
 
     for event in pygame.event.get():
         
@@ -144,12 +169,12 @@ while play:
         elif screen == 2:
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_SPACE):
-                    if ((playerX > 190) and (playerX < 430)):
+                    if ((playerX > w * 190/1600) and (playerX < w * 430/1600)):
                         screen = 3
-                    if ((playerX > 630) and (playerX < 870)):
-                        screen = 4
-                    if ((playerX > 1070) and (playerX < 1310)):
-                        sceen = 5
+                    if ((playerX > w * 630/1600) and (playerX < w * 870/1600)):
+                        screen = 3
+                    if ((playerX > w * 1070/1600) and (playerX < w * 1310/1600)):
+                        sceen = 3
                 if ((event.key == pygame.K_d or event.key == pygame.K_RIGHT) and (not (event.key == pygame.K_a or event.key == pygame.K_LEFT))):
                     moveLeft = False
                     moveRight = True
